@@ -71,20 +71,18 @@ func main() {
 		scanner := bufio.NewScanner(os.Stdin)
 		ok := scanner.Scan()
 		if !ok {
-			fmt.Println("\nExiting...")
+			fmt.Println("\nHopping out...!")
 			break
 		}
 
 		switch scanner.Text() {
 		case "a":
 			clear()
-			res, stdout, stderr := goTest()
-			handleOutput(res, stdout, stderr)
+			goTest()
 
 		case "c":
 			clear()
-			res, stdout, stderr := goTest("-count=1")
-			handleOutput(res, stdout, stderr)
+			goTest("-count=1")
 
 		case "p":
 			clearPlusUsage()
@@ -101,14 +99,12 @@ func main() {
 
 			fmt.Printf("Running `go test` for pattern : %s\n", pattern)
 
-			res, stdout, stderr := goTest("-run", pattern)
-			handleOutput(res, stdout, stderr)
+			goTest("-run", pattern)
 
 		case "l":
 			clear()
 			prev = ""
-			res, stdout, stderr := goTest("-list", ".")
-			handleOutput(res, stdout, stderr)
+			goTest("-list", ".")
 		case "d":
 			clearPlusUsage()
 			fmt.Printf("\npattern › ")
@@ -124,16 +120,13 @@ func main() {
 
 			fmt.Printf("Running `go test -list` for pattern : %s\n", pattern)
 
-			res, stdout, stderr := goTest("-list", pattern)
-			handleOutput(res, stdout, stderr)
+			goTest("-list", pattern)
 		case "t":
 			clear()
-			res, stdout, stderr := goTest("-run", "^Test")
-			handleOutput(res, stdout, stderr)
+			goTest("-run", "^Test")
 		case "b":
 			clear()
-			res, stdout, stderr := goTest("-bench=.", "-run", "^Benchmark")
-			handleOutput(res, stdout, stderr)
+			goTest("-bench=.", "-run", "^Benchmark")
 		case "q":
 			os.Exit(0)
 		case "":
@@ -151,7 +144,7 @@ func main() {
 	}
 }
 
-func goTest(arguments ...string) (result, bytes.Buffer, bytes.Buffer) {
+func goTest(arguments ...string) {
 	var res result
 	var stdoutBuf, stderrBuf bytes.Buffer
 
@@ -161,7 +154,7 @@ func goTest(arguments ...string) (result, bytes.Buffer, bytes.Buffer) {
 	cmd := exec.Command("go", args...)
 
 	cmd.Stdout = io.MultiWriter(customPrinter, &stdoutBuf)
-	cmd.Stderr = io.MultiWriter(customPrinter, &stdoutBuf)
+	cmd.Stderr = io.MultiWriter(customPrinter, &stderrBuf)
 
 	if runtime.GOOS == "windows" {
 		cmd = exec.Command("tasklist")
@@ -169,7 +162,7 @@ func goTest(arguments ...string) (result, bytes.Buffer, bytes.Buffer) {
 
 	err := cmd.Start()
 	if err != nil {
-		return noStart, stdoutBuf, stderrBuf
+		res = noStart
 	}
 
 	err = cmd.Wait()
@@ -184,17 +177,13 @@ func goTest(arguments ...string) (result, bytes.Buffer, bytes.Buffer) {
 
 	cmd.Process.Kill()
 
-	return res, stdoutBuf, stderrBuf
-}
-
-func handleOutput(res result, stdout, stderr bytes.Buffer) {
 	switch res {
 	case noCompile:
-		red("Failed to run tests due to compiler errors\n")
-		fmt.Println(stderr.String())
+		red("Failed to run some tests due to compiler errors\n")
+		fmt.Println(stderrBuf.String())
 	case noStart:
 		red("Failed to start the `go test` command\n")
-		fmt.Println(stderr.String())
+		fmt.Println(stderrBuf.String())
 	case passed:
 		success("\nPASS\n")
 	case failed:

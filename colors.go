@@ -36,18 +36,18 @@ func skip(format string, a ...interface{}) {
 }
 
 func pass(format string, a ...interface{}) {
-	italicsGreen := color.New(color.FgHiGreen).Add(color.Faint)
-	italicsGreen.Printf(format, a...)
+	faintGreen := color.New(color.FgHiGreen).Add(color.Faint)
+	faintGreen.Printf(format, a...)
 	color.Unset()
 }
 
 func fail(format string, a ...interface{}) {
-	italicsRed := color.New(color.FgHiRed).Add(color.Faint)
-	italicsRed.Printf(format, a...)
+	faintRed := color.New(color.FgHiRed).Add(color.Faint)
+	faintRed.Printf(format, a...)
 	color.Unset()
 }
 func running(format string, a ...interface{}) {
-	italics := color.New().Add(color.Underline)
-	italics.Printf(format, a...)
+	underline := color.New().Add(color.Underline)
+	underline.Printf(format, a...)
 	color.Unset()
 }

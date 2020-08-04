@@ -9,7 +9,8 @@ Hop is an interactive test runner for Go. It was inspired by Jest's [*--watch*](
 You can get `hop` by running.
 
 
-It comes with two modes; the default plain old boring B&W, as well as colourized 🌈, by providing the `--color` flag.
+It comes with two modes; the default plain old boring B&W, as well as fabulous 🌈🎨🎆🍭colorized output.  
+Just provide the `--color` flag!
 
 
 ## Are you just wrapping some commands?
@@ -21,6 +22,7 @@ go test -v ./... -count=1
 go test -v ./... -list .
 go test -v ./... -list <pattern>
 go test -v ./... -run <pattern>
+go test -v ./... -bench=. -run ^Benchmark
 ```
 
 ## How does it work?

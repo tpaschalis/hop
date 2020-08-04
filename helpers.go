@@ -31,13 +31,11 @@ func clear() {
 }
 
 type colourizedWriter bytes.Buffer
-
 type monochromeWriter bytes.Buffer
 
 func (c *colourizedWriter) Write(p []byte) (n int, err error) {
-	var events []event
-	r := bytes.NewReader(p)
-	scanner := bufio.NewScanner(r)
+
+	scanner := bufio.NewScanner(bytes.NewReader(p))
 	for scanner.Scan() {
 		var ev event
 		line := scanner.Bytes()
@@ -46,40 +44,8 @@ func (c *colourizedWriter) Write(p []byte) (n int, err error) {
 		if err != nil {
 			continue
 		}
-		//ev.Output = strings.Replace(ev.Output, "\n", `\n`, -1)
 		ev.Output = strings.Replace(ev.Output, "\n", "", -1)
-		events = append(events, ev)
-	}
-
-	for _, ev := range events {
-		if ev.Action == "skip" || strings.Contains(ev.Output, "\t(cached)") {
-			skip(ev.Output + "\n")
-		}
-		if strings.Contains(ev.Output, "[no test files]") {
-			ignore("Package " + ev.Package + " skipped -- no test files")
-		}
-
-		if ev.Action == "run" {
-			running("Running " + ev.Package + "/" + ev.Test + "\n")
-		}
-
-		if ev.Action == "output" && !strings.Contains(ev.Output, "=== RUN") && !strings.Contains(ev.Output, "--- PASS") && !strings.Contains(ev.Output, "--- FAIL") && ev.Output != "PASS" && ev.Output != "FAIL" && !strings.Contains(ev.Output, "\t(cached)") && !strings.Contains(ev.Output, "\t[no test files]") {
-			fmt.Println(ev.Output)
-		}
-		if ev.Action == "pass" {
-			if ev.Test == "" {
-				success("\nPackage " + ev.Package + " passed\n\n")
-			} else {
-				pass("   PASS " + ev.Package + "/" + ev.Test + "\n\n")
-			}
-		}
-		if ev.Action == "fail" {
-			if ev.Test == "" {
-				failure("\nPackage " + ev.Package + " failed\n\n")
-			} else {
-				fail("   FAIL " + ev.Package + "/" + ev.Test + "\n\n")
-			}
-		}
+		colourize(ev)
 	}
 
 	return len(p), nil
@@ -88,4 +54,35 @@ func (c *colourizedWriter) Write(p []byte) (n int, err error) {
 func (c *monochromeWriter) Write(p []byte) (n int, err error) {
 	fmt.Printf(string(p))
 	return len(p), nil
+}
+
+func colourize(ev event) {
+	if ev.Action == "skip" || strings.Contains(ev.Output, "\t(cached)") {
+		skip(ev.Output + "\n")
+	}
+	if strings.Contains(ev.Output, "[no test files]") {
+		ignore("Package " + ev.Package + " skipped -- no test files")
+	}
+
+	if ev.Action == "run" {
+		running("Running " + ev.Package + "/" + ev.Test + "\n")
+	}
+
+	if ev.Action == "output" && !strings.Contains(ev.Output, "=== RUN") && !strings.Contains(ev.Output, "--- PASS") && !strings.Contains(ev.Output, "--- FAIL") && ev.Output != "PASS" && ev.Output != "FAIL" && !strings.Contains(ev.Output, "\t(cached)") && !strings.Contains(ev.Output, "\t[no test files]") {
+		fmt.Println(ev.Output)
+	}
+	if ev.Action == "pass" {
+		if ev.Test == "" {
+			success("\nPackage " + ev.Package + " passed\n\n")
+		} else {
+			pass("   PASS " + ev.Package + "/" + ev.Test + "\n\n")
+		}
+	}
+	if ev.Action == "fail" {
+		if ev.Test == "" {
+			failure("\nPackage " + ev.Package + " failed\n\n")
+		} else {
+			fail("   FAIL " + ev.Package + "/" + ev.Test + "\n\n")
+		}
+	}
 }

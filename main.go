@@ -46,16 +46,16 @@ var (
 	colourPrinter colourizedWriter
 	bwPrinter     monochromeWriter
 	baseArgs      []string
-	colorized     bool
+	colourized    bool
 	prev          string
 )
 
 func main() {
 
-	flag.BoolVar(&colorized, "color", false, "enable colorful output")
+	flag.BoolVar(&colourized, "colour", false, "enable colourful output")
 	flag.Parse()
 
-	if colorized {
+	if colourized {
 		customPrinter = &colourPrinter
 		baseArgs = []string{"test", "-v", "./...", "-json"}
 	} else {

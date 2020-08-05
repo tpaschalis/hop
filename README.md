@@ -7,11 +7,19 @@ Hop is an interactive test runner for Go. It was inspired by Jest's [*--watch*](
 ## Installation and Usage
 
 You can get `hop` by running.
-
+```
+git clone https://github.com/tpaschalis/hop.git
+cd hop
+go install .
+```
 
 It comes with two modes; the default plain old boring B&W, as well as fabulous 🌈🎨🎆🍭colourized output.  
 Just provide the `--colour` flag!
 
+## Here's Hop in action!
+
+*Monochrome mode*
+<a href="https://asciinema.org/a/351777" target="_blank"><img src="https://asciinema.org/a/351777.svg" /></a>
 
 ## Are you just wrapping some commands?
 

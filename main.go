@@ -66,7 +66,6 @@ func main() {
 	clearPlusUsage()
 
 	for {
-		fmt.Printf(prev)
 		prev = ""
 		scanner := bufio.NewScanner(os.Stdin)
 		ok := scanner.Scan()

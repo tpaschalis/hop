@@ -24,7 +24,6 @@ const (
 
 	usage = `Usage:
 › Press a to run all tests.
-› Press f to run failed tests.
 › Press c to run all tests, forcing a re-run of cached results.
 › Press p to run all tests satisfying a regex
 › Press l to list all tests.

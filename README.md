@@ -1,5 +1,7 @@
 # hop
 
+*This is a work-in-progress. Things are likely to change (a lot). Hopefully for the best.*
+
 ![gopher logo](gopher.png)
 
 Hop is an interactive test runner for Go. It was inspired by Jest's [*--watch*](https://jestjs.io/docs/en/cli#--watch) mode and [this](https://twitter.com/felixge/status/1286359708799062016) tweet. It's called Hop, because well, you just hop in and start running your tests! Coffee and music are optional, but recommended!
@@ -48,3 +50,8 @@ First off, I'm using *colour*, with an 'ou'. Mainly because 'monochrome' and 'co
 Secondly, that's very probable! You could change them by tinkering with the `colors.go` file (see the irony?).
 
 I'm probably going to add some easy way to configure them from a text file. I'm a below average designer, so feel free to propose changes!
+
+## Roadmap
+- Show pretty-printed coverage
+- Run tests with specific tags
+- Run previously failed tests

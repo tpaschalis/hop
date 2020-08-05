@@ -19,7 +19,7 @@ Just provide the `--colour` flag!
 ## Here's Hop in action!
 
 *Monochrome mode*
-<a href="https://asciinema.org/a/351777" target="_blank"><img src="https://asciinema.org/a/351777.svg" /></a>
+<script id="asciicast-351777" src="https://asciinema.org/a/351777.js" async></script>
 
 ## Are you just wrapping some commands?
 

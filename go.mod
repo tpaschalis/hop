@@ -1,4 +1,4 @@
-module hop
+module github.com/tpaschalis/hop
 
 go 1.14
 

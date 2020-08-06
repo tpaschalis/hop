@@ -9,7 +9,9 @@ Hop is an interactive test runner for Go. It was inspired by Jest's [*--watch*](
 ## Installation and Usage
 
 You can get `hop` by running.
-```
+```bash
+$ go get -u github.com/tpaschalis/hop
+    # or
 $ git clone https://github.com/tpaschalis/hop.git
 $ cd hop
 $ go install .
